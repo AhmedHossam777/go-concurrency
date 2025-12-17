@@ -27,11 +27,16 @@ func main() {
 
 	ch <- 1 // won't block, won't block as the buffer has space
 	ch <- 2 // won't block, won't block as the buffer has space
-	//ch <- 3 this will block as the buffer will be full you must wait for someone else to receive to make this rum
+	ch <- 3
+	//ch <- 4 //this will block as the buffer will be full
 
 	val1 := <-ch // 1
 	val2 := <-ch // 2
+	val3 := <-ch // 3
+	//val4 := <-ch // 4
 
 	fmt.Println(val1)
 	fmt.Println(val2)
+	fmt.Println(val3)
+	//fmt.Println(val4)
 }
