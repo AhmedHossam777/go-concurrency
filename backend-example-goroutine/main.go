@@ -54,7 +54,7 @@ func GetUserProfile(userId int) UserProfile {
 	return Profile
 }
 
-// ! Note: we cannot use wg inside the main function, this will led the program to end immediately
+// ! Note: we cannot use wg inside the main function, this will lead the program to end immediately
 func main() {
 	start := time.Now()
 	profile := GetUserProfile(90)

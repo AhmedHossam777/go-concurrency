@@ -22,21 +22,43 @@ import "fmt"
 // ! Buffered Channels (Asynchronous... up to a point)
 // ? ch := make(chan int,3) Buffer size 3
 // * Key behavior: Sender only blocks when buffer is full. Like a mailbox with limited slots.
+//func main() {
+//	ch := make(chan int, 3)
+//
+//	ch <- 1 // won't block, won't block as the buffer has space
+//	ch <- 2 // won't block, won't block as the buffer has space
+//	ch <- 3
+//	//ch <- 4 //this will block as the buffer will be full
+//
+//	val1 := <-ch // 1
+//	val2 := <-ch // 2
+//	val3 := <-ch // 3
+//	//val4 := <-ch // 4
+//
+//	fmt.Println(val1)
+//	fmt.Println(val2)
+//	fmt.Println(val3)
+//	//fmt.Println(val4)
+//}
+
 func main() {
-	ch := make(chan int, 3)
+	MyChannel := make(chan string)
+	AnotherChannel := make(chan string)
 
-	ch <- 1 // won't block, won't block as the buffer has space
-	ch <- 2 // won't block, won't block as the buffer has space
-	ch <- 3
-	//ch <- 4 //this will block as the buffer will be full
+	go func() {
+		MyChannel <- "data"
+	}()
 
-	val1 := <-ch // 1
-	val2 := <-ch // 2
-	val3 := <-ch // 3
-	//val4 := <-ch // 4
+	go func() {
+		AnotherChannel <- "cow"
+	}()
 
-	fmt.Println(val1)
-	fmt.Println(val2)
-	fmt.Println(val3)
-	//fmt.Println(val4)
+	// this select statement will block until one of its case run
+	select {
+	case msgFromMyChannel := <-MyChannel:
+		fmt.Println(msgFromMyChannel)
+
+	case msgFromAnotherChannel := <-AnotherChannel:
+		fmt.Println(msgFromAnotherChannel)
+	}
 }
