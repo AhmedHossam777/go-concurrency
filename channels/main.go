@@ -2,15 +2,15 @@ package main
 
 import "fmt"
 
-//! Unbuffered Channels (Synchronous)
-//? ch := make(chan int) // Unbuffered - capacity 0
-//* Key behavior: Sender blocks until receiver is ready, and vice versa. It's like a phone call — both parties must be present.
+// ! Unbuffered Channels (Synchronous)
+// ? ch := make(chan int) // Unbuffered - capacity 0
+// * Key behavior: Sender blocks until receiver is ready, and vice versa. It's like a phone call — both parties must be present.
 //func main() {
 //	ch := make(chan int)
 //
 //	go func() {
 //		// this will block until someone receives
-//		ch <- 42
+//		ch <- 20
 //		fmt.Println("Sent!!")
 //	}()
 //
