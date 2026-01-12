@@ -2,63 +2,26 @@ package main
 
 import "fmt"
 
-// ! Unbuffered Channels (Synchronous)
-// ? ch := make(chan int) // Unbuffered - capacity 0
-// * Key behavior: Sender blocks until receiver is ready, and vice versa. It's like a phone call — both parties must be present.
-//func main() {
-//	ch := make(chan int)
-//
-//	go func() {
-//		// this will block until someone receives
-//		ch <- 20
-//		fmt.Println("Sent!!")
-//	}()
-//
-//	// this will block until someone sends
-//	value := <-ch
-//	fmt.Println("received!!", value)
-//}
-
-// ! Buffered Channels (Asynchronous... up to a point)
-// ? ch := make(chan int,3) Buffer size 3
-// * Key behavior: Sender only blocks when buffer is full. Like a mailbox with limited slots.
-//func main() {
-//	ch := make(chan int, 3)
-//
-//	ch <- 1 // won't block, won't block as the buffer has space
-//	ch <- 2 // won't block, won't block as the buffer has space
-//	ch <- 3
-//	//ch <- 4 //this will block as the buffer will be full
-//
-//	val1 := <-ch // 1
-//	val2 := <-ch // 2
-//	val3 := <-ch // 3
-//	//val4 := <-ch // 4
-//
-//	fmt.Println(val1)
-//	fmt.Println(val2)
-//	fmt.Println(val3)
-//	//fmt.Println(val4)
-//}
+// buffered channels -> make(chan int)
 
 func main() {
-	MyChannel := make(chan string)
-	AnotherChannel := make(chan string)
-
+	ch := make(chan int)
+	
+	fmt.Println("sent to channel ch")
 	go func() {
-		MyChannel <- "data"
+		ch <- 90 // here we send data into channel,
+		// so this will block the goroutine until this data get revievied
 	}()
-
-	go func() {
-		AnotherChannel <- "cow"
-	}()
-
-	// this select statement will block until one of its case run
-	select {
-	case msgFromMyChannel := <-MyChannel:
-		fmt.Println(msgFromMyChannel)
-
-	case msgFromAnotherChannel := <-AnotherChannel:
-		fmt.Println(msgFromAnotherChannel)
-	}
+	
+	// here we are receiving data from the channel,
+	// so this will block until the data is sent from the channel
+	value := <-ch
+	fmt.Println("data received: ", value)
+	
+	fmt.Println("hello")
 }
+
+//! without the go routine that contain the channel, we will get deadlock error
+//? that's because ch <- 90 tries to send to the channel on the main
+//? goroutine and the reciever in the same goroutines but comes after that
+//? and that gourotines as we said is blocked, so this will cause the deadlock
