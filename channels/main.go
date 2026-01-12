@@ -5,17 +5,18 @@ import "fmt"
 // buffered channels -> make(chan int)
 
 func main() {
-	ch := make(chan int)
+	ch := make(chan string)
 	
 	fmt.Println("sent to channel ch")
 	go func() {
-		ch <- 90 // here we send data into channel,
+		ch <- "data" // here we send data into channel,
 		// so this will block the goroutine until this data get revievied
 	}()
 	
 	// here we are receiving data from the channel,
 	// so this will block until the data is sent from the channel
 	value := <-ch
+	close(ch)
 	fmt.Println("data received: ", value)
 	
 	fmt.Println("hello")
