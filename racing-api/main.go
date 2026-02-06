@@ -8,7 +8,7 @@ import (
 
 func queryReplica(replicaID int) <-chan string {
 	result := make(chan string)
-	
+
 	go func() {
 		delay := time.Duration(rand.Intn(500)) * time.Millisecond
 		time.Sleep(delay)
@@ -17,7 +17,7 @@ func queryReplica(replicaID int) <-chan string {
 			delay,
 		)
 	}()
-	
+
 	return result
 }
 
@@ -25,13 +25,13 @@ func queryWithRedundancy() string {
 	select {
 	case r := <-queryReplica(1):
 		return r
-	
+
 	case r := <-queryReplica(2):
 		return r
-	
+
 	case r := <-queryReplica(3):
 		return r
-	
+
 	case <-time.After(1 * time.Second):
 		return fmt.Sprintf("All replicas timed out")
 	}
