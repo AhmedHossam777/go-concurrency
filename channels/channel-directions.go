@@ -17,9 +17,9 @@ func consumer(in <-chan int) {
 
 func main() {
 	ch := make(chan int)
-	
+
 	go producer(ch)
-	
+
 	consumer(ch)
 }
 
