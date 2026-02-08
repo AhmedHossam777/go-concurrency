@@ -1,24 +1,39 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
-	myChannel := make(chan string)
-	anotherChannel := make(chan string)
-
+	ch1 := make(chan string)
+	ch2 := make(chan string)
+	
 	go func() {
-		myChannel <- "data"
+		time.Sleep(1 * time.Second)
+		ch1 <- "message from channel one"
 	}()
-
+	
 	go func() {
-		anotherChannel <- "cow"
+		time.Sleep(2 * time.Second)
+		ch2 <- "message from channel two"
 	}()
-
-	// this select statement will block until one of it's statement runs
-	select {
-	case messageFromMyChannel := <-myChannel:
-		fmt.Println(messageFromMyChannel)
-	case messageFromAnotherChannel := <-anotherChannel:
-		fmt.Println(messageFromAnotherChannel)
+	
+	// ! without the select statement: this will return an error
+	// for i := 0; i < 2; i++ {
+	// 	msg1 := <-ch1
+	// 	fmt.Println(msg1)
+	//
+	// 	msg2 := <-ch1
+	// 	fmt.Println(msg2)
+	// }
+	
+	for i := 0; i < 2; i++ {
+		select {
+		case msg1 := <-ch1:
+			fmt.Println(msg1)
+		case msg2 := <-ch2:
+			fmt.Println(msg2)
+		}
 	}
 }
