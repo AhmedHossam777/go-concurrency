@@ -9,17 +9,16 @@ func main() {
 	for _, char := range chars {
 		select {
 		case charChannel <- char:
-
 		}
 	}
 
 	close(charChannel)
 
-	//* the following lines will return only the first character as the channel get out the data like queue
-	//result := <-charChannel
-	//fmt.Println(result)
+	// * the following lines will return only the first character as the channel get out the data like queue
+	// result := <-charChannel
+	// fmt.Println(result)
 
-	//* to get the all data we will use a for loop
+	// * to get the all data we will use a for loop
 	for result := range charChannel {
 		fmt.Println(result) // a  b  c
 	}
