@@ -17,7 +17,7 @@ func updateMessage(s string, mu *sync.Mutex) {
 
 func main() {
 	msg = "hello, world"
-	
+
 	var mutex sync.Mutex
 	// here is the problem of the race condition
 	// two goroutines is trying to modofy the same data
@@ -26,6 +26,6 @@ func main() {
 	go updateMessage("hello, universe!", &mutex)
 	go updateMessage("hello, cosmos!", &mutex)
 	wg.Wait()
-	
+
 	fmt.Println(msg)
 }
